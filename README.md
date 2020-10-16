@@ -1,3 +1,3 @@
 # Website
-Website for my business where I post projects related to what I can do for your business.
+Personal website application where I post both personal projects and recreations of client projects.
 https://www.entitymetrics.com
