@@ -1,0 +1,694 @@
+{% extends "base.html" %}
+{% block title %}Home page{% endblock %}
+{% block content %}
+<div class="body">
+	<div role="main" class="main">
+
+		<!-- Page Content -->
+    <div class="container">
+    <div class="row">
+
+      <!-- Content Column -->
+      <div class="col-lg-8">
+        <h1 class="mt-4">Making a Flask Website</h1>
+        <hr>
+        <!-- Preview Image -->
+        <img class="img-fluid rounded" src="/static/imgs/website_screenshot.png" alt="">
+        <hr>
+
+        <!-- Post Content -->
+        <div id="overview"><h3>Overview</h3></div>
+
+        <p class="lead">
+          In this project, we will be creating a website with Python, Flask, and deploy it to a
+          DigitalOcean Ubuntu server. For the purposes of this post, we'll be using the Linux
+          terminal environment. Happy coding!
+        </p>
+
+        <hr>
+
+        <div id="installing-packages"><h3>Installing Packages</h3></div>
+        <ul>
+          <li>
+            <p>First we want to make sure the machine is set up to run python code.
+              <br>
+              To do this, please follow the instructions found here -
+              <a href="https://www.digitalocean.com/community/tutorials/how-to-install-python-3-and-set-up-a-programming-environment-on-an-ubuntu-18-04-server">
+                link
+              </a>
+            </p>
+          </li>
+          <li>
+            <p>Once your python environment is set up, we want to install Flask. Run the following code:</p>
+            <pre><code>
+              sudo pip install Flask
+            </code></pre>
+          </li>
+        </ul>
+
+        <hr>
+
+        <div id="create-website"><h3>Creating a Python Website</h3></div>
+        <p>Now that we have Flask installed, let's start coding some stuff.</p>
+        <ul>
+          <li>
+            <p>Create new .py file called __init__.py and copy the following code.</p>
+            <pre><code>
+from flask import Flask
+app = Flask(__name__)
+if __name__ == "__main__":
+app.run(debug=True)
+            </code></pre>
+            <p>If you notice the "debug=True", this is telling Flask to watch for changes every time we
+               save the file. This allows us to not have to close and reload our app every time we make a
+                change or update.
+            </p>
+          </li>
+          <li><p>Save the file __init__.py</p></li>
+          <li>
+            <p>From here we want to add our routes for each web page. You'll need one for each
+              website page. Make sure to change the function names and route names, respectively.
+              For now let's just add a Home page.
+            </p>
+            <pre><code>
+@app.route("/")
+def home():
+return "Hello! This is the main page"
+            </code></pre>
+          </li>
+
+          <hr>
+
+          <div id="running-website"><h5>Running Your Website</h5></div>
+          <li>
+            <p>To start up your website, simply run the following two commands in the command line:</p>
+            <pre><code>
+FLASKAPP="__init__.py"
+sudo python __init__.py
+            </code></pre>
+          </li>
+          <li><p>You should receive the following output</p>
+            <img class="img-fluid rounded" src="/static/imgs/website_post_server_running.png" alt="">
+          </li>
+          <li><p>Open your browser of choice and enter the URL found in your console. (aka http://127.0.0.1:5000)</p></li>
+          <li>
+            <p>Once you've connected to your site, you should see something like this.</p>
+            <img class="img-fluid rounded" src="/static/imgs/connected-to-website.png" alt="">
+          </li>
+
+          <hr>
+
+          <div id="adding-pages"><h5>Adding More pages to Your Website</h5></div>
+          <li>
+            <p>
+              Moving on to the next step, having only one page that says "Hello" isn't very exiting. Here we want to add more routes similar to first one we created.
+            </p>
+            <br>
+            <p>
+              To define a Dynamic URL, Change up your __init__.py file to reflect the following:
+            </p>
+            <pre><code>
+from flask import Flask
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+  return "Hello! This is the home page!"
+
+@app.route('/projects')
+def about():
+  return "Hello! This is the projects page!"
+
+@app.route('/contact')
+def contact():
+  return "Hello! This is the contact page!"
+
+if __name__ == "__main__":
+  app.run(debug=True)
+            </code></pre>
+          </li>
+          <li>
+            <p>Once that's added, you should see the following page when navigating to each url.</p>
+            <img class="img-fluid rounded" src="/static/imgs/connected-to-home-page.png" alt="">
+            <img class="img-fluid rounded" src="/static/imgs/connected-to-projects-page.png" alt="">
+            <img class="img-fluid rounded" src="/static/imgs/connected-to-contact-page.png" alt="">
+          </li>
+
+          <hr>
+
+          <div id="adding-html"><h5>Adding HTML To Your Website</h5></div>
+          <li>
+            <p>Now it's time to add in some HTML so we can have a nice website to look at instead of "Hello".</p>
+            <p>Create a new folder called "templates inside the SAME directory as your __init__.py file.</p>
+            <pre><code>
+|---webApp
+|---------templates
+|---------__init__.py
+            </code></pre>
+          </li>
+          <li>
+            <p>Create a new file called index.html file and save it inside the templates folder.</p>
+            <p>Copy paste the following code in this file.</p>
+            <pre><code>
+&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;Home page&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Home Page!&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+            </code></pre>
+          </li>
+          <li>
+            <p>Now we have to tell flask to render the template for our home page.
+            Change the route for home in your __init__.py file to the following:</p>
+            <pre><code>
+@app.route("/")
+def home():
+  return render_template("index.html")
+            </code></pre>
+          </li>
+          <li>
+            <p>If all is working, you should get the following output:</p>
+            <img class="img-fluid rounded" src="/static/imgs/render_html.png" alt="">
+          </li>
+
+          <hr>
+
+          <div id="adding-bootstrap"><h5>Adding Bootstrap</h5></div>
+          <p>Let's take it a step further. HTML is a pretty straight-language but it can easily get messy and out of hand. Let's add in Bootstrap so that we don't have to copy paste our HTML over and over again.</p>
+          <li>
+            <p>Creating a Base Template</p>
+            <p>The following code represents a normal HTML file. We've seen this code before somewhere.</p>
+            <pre><code>
+&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;Home page&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Home Page!&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+            </code></pre>
+          </li>
+          <li>
+            <p>Now let's add in the Bootstrap library</p>
+            <p>The following CSS code is necessary for Bootstrap to render with your website. Add this code snippet right after your &lt;title&gt; tag.
+            <pre><code>&lt;link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"&gt;</code></pre>
+            <p>Then add the following html code to the end of your body tag for BootStrap's JavaScript files.</p>
+            <pre><code>
+&lt;script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"&gt;&lt;/script&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"&gt;&lt;/script&gt;
+&lt;script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"&gt;&lt;/script&gt;
+            </code></pre>
+          </li>
+          <li>
+            <p>This is what your index.html file should look like now:</p>
+            <pre><code>
+&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;Home page&lt;/title&gt;
+  &lt;link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Home Page!&lt;/h1&gt;
+  &lt;script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"&gt;&lt;/script&gt;
+  &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"&gt;&lt;/script&gt;
+  &lt;script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+            </code></pre>
+          </li>
+          <li>
+            <p>Bootstrap Template Blocks</p>
+            <p>Now that we have Bootstrap setup, we can add in Block Templates. The code in the previous section will become our base template that all other html pages will inherit from.</p>
+            <p>To do this we add block templates to our base html file. Copy the following code and into a new file called base.html</p>
+            <pre><code>
+&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;&#123;% block title %&#125;&#123;% endblock %&#125;&lt;/title&gt;
+  &lt;link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt; This is the base template! &lt;/h1&gt;
+  &#123;% block content %&#125;
+  &#123;% endblock %&#125;
+  &lt;script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"&gt;&lt;/script&gt;
+  &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"&gt;&lt;/script&gt;
+  &lt;script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+            </code></pre>
+            <p>Notice our block statements inside the title tag and at the beginning of the body tag. This is where other pages will embed their respective html into our base html file.</p>
+          </li>
+          <li>
+            <p>Next we need to make a few changes to our index.html file. The following code snippet is an example of basic template inheritance.</p>
+            <pre><code>
+&#123;% extends "base.html" %&#125;
+&#123;% block title %&#125;Home Page&#123;% endblock %&#125;
+&#123;% block content %&#125;
+&lt;h1&gt;Test&lt;/h1&gt;
+&#123;% endblock %&#125;
+            </code></pre>
+            <p>Now take a look at our new index.html file:</p>
+            <pre><code>
+&#123;% extends "base.html" %&#125;
+&#123;% block title %&#125;Home Page&#123;% endblock %&#125;
+&#123;% block content %&#125;
+&lt;h1&gt;Hello from the index page!&lt;/h1&gt;
+&#123;% endblock %&#125;
+            </code></pre>
+            <p>Save your files and rerun your app. Your output should reflect the following:</p>
+            <img class="img-fluid rounded" src="/static/imgs/base_template_inheritance.png" alt="">
+          </li>
+          <li>
+            <p>Adding a menu to the top of our website</p>
+            <p>Now that our Bootstrap is working. We can add some fancy code. If you navigate to the Bootstrap website <a href="https://getbootstrap.com/">(link here)</a> you'll many code examples and documentation.</p>
+            <p>Here is the code snippet for a basic menu bar pulled directly from their website.</p>
+            <pre><code>
+&lt;nav class="navbar navbar-expand-lg navbar-light bg-light"&gt;
+  &lt;a class="navbar-brand" href="#">Navbar&lt;/a&gt;
+  &lt;button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"&gt;
+    &lt;span class="navbar-toggler-icon"&gt;&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;div class="collapse navbar-collapse" id="navbarNav"&gt;
+    &lt;ul class="navbar-nav"&gt;
+      &lt;li class="nav-item active"&gt;
+        &lt;a class="nav-link" href="#"&gt;Home &lt;span class="sr-only"&gt;(current)&lt;/span&gt;&lt;/a&gt;
+      &lt;/li&gt;
+      &lt;li class="nav-item"&gt;
+        &lt;a class="nav-link" href="#"&gt;Features&lt;/a&gt;
+      &lt;/li&gt;
+      &lt;li class="nav-item"&gt;
+        &lt;a class="nav-link" href="#"&gt;Pricing&lt;/a&gt;
+      &lt;/li&gt;
+      &lt;li class="nav-item"&gt;
+        &lt;a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"&gt;Disabled&lt;/a&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;
+            </code></pre>
+            <p>Change the menu up however you like and add this to your base.html file at the top of your body tag</p>
+            <pre><code>
+&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;&#123;% block title %&#125;&#123;% endblock %&#125;&lt;/title&gt;
+  &lt;link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;nav class="navbar navbar-expand-lg navbar-light bg-light"&gt;
+    &lt;a class="navbar-brand" href="#">Navbar&lt;/a&gt;
+    &lt;button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"&gt;
+      &lt;span class="navbar-toggler-icon"&gt;&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;div class="collapse navbar-collapse" id="navbarNav"&gt;
+      &lt;ul class="navbar-nav"&gt;
+        &lt;li class="nav-item active"&gt;
+          &lt;a class="nav-link" href="#"&gt;Home &lt;span class="sr-only"&gt;(current)&lt;/span&gt;&lt;/a&gt;
+        &lt;/li&gt;
+        &lt;li class="nav-item"&gt;
+          &lt;a class="nav-link" href="#"&gt;Features&lt;/a&gt;
+        &lt;/li&gt;
+        &lt;li class="nav-item"&gt;
+          &lt;a class="nav-link" href="#"&gt;Pricing&lt;/a&gt;
+        &lt;/li&gt;
+        &lt;li class="nav-item"&gt;
+          &lt;a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"&gt;Disabled&lt;/a&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  &lt;/nav&gt;
+  &lt;h1&gt; This is the base template! &lt;/h1&gt;
+  &#123;% block content %&#125;
+  &#123;% endblock %&#125;
+  &lt;script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"&gt;&lt;/script&gt;
+  &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"&gt;&lt;/script&gt;
+  &lt;script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+            </code></pre>
+            <p>Here is what your website should look like now</p>
+            <img class="img-fluid rounded" src="/static/imgs/base_template_with_menu.png" alt="">
+          </li>
+        </ul>
+
+        <hr>
+
+        <div id="deploy-to-server"><h3>Deploying To VPS Linux Server</h3></div>
+        <p>
+          Pheew! Okay now that our website is built, we want to show it the world. In this section
+          we'll run through the process of setting up a domain name and configuring a Digital Ocean
+          droplet to host our website. This section will get pretty nitty gritty but follow along
+          and you should be just fine.
+        </p>
+        <div id="droplet-setup"><h5>Setting up a Digital Ocean Droplet</h5></div>
+        <p>
+          Digital Ocean is an amazing VPS service that allows for near limitless web application
+          possibilities. The main reason we'll be using Digital Ocean over another VPS service like
+          Linode is that Digital Ocean has a very extensive array of documentation. If you get stuck
+          at any point in this post, Digital Ocean probably has an article about it. With that being
+          said, lets jump in.
+        </p>
+        <ul>
+          <li>
+            <p>Obtain a domain name if you like by getting one from Google Domains. You can skip this step if you want.</p>
+          </li>
+          <li>
+            <p>Create an account with <a href="https://digitalocean.com">Digtal Ocean</a></p>
+          </li>
+          <li>
+            <p>Creating a Ubuntu Droplet</p>
+            <ul>
+              <li>
+                <p>Create a new project</p>
+                <img class="img-fluid rounded" src="/static/imgs/create-a-new-project.png" alt="">
+              </li>
+              <li>
+                <p>Enter your project details</p>
+                <img class="img-fluid rounded" src="/static/imgs/enter-project-details.png" alt="">
+              </li>
+              <li>
+                <p>Skip this step if you don't need it. This will allow you to copy an existing project into a new one</p>
+                <img class="img-fluid rounded" src="/static/imgs/copy-existing-project.png" alt="">
+              </li>
+              <li>
+                <p>Create a new droplet</p>
+                <img class="img-fluid rounded" src="/static/imgs/create-a-new-droplet.png" alt="">
+              </li>
+              <li>
+                <p>Select Ubuntu 18.04</p>
+                <img class="img-fluid rounded" src="/static/imgs/select-ubuntu-18.png" alt="">
+              </li>
+              <li>
+                <p>Choose a plan</p>
+                <img class="img-fluid rounded" src="/static/imgs/choose-basic-plan.png" alt="">
+              </li>
+              <li>
+                <p>Add a block storage if you desire. This is essentially just adding database storage space to your droplet</p>
+                <img class="img-fluid rounded" src="/static/imgs/add-block-storage.png" alt="">
+              </li>
+              <li>
+                <p>Choose the region where you want your server to be located. For simplicity, just choose the one closest to you</p>
+                <img class="img-fluid rounded" src="/static/imgs/choose-a-region.png" alt="">
+              </li>
+              <li>
+                <p>Check the boxes for IPv6 and Monitoring</p>
+                <img class="img-fluid rounded" src="/static/imgs/select-additional-options.png" alt="">
+              </li>
+              <li>
+                <p>Add a password</p>
+                <img class="img-fluid rounded" src="/static/imgs/add-a-password.png" alt="">
+              </li>
+              <li>
+                <p>Finally, choose a name for your droplet and hit "Create Droplet" at the bottom of the page</p>
+                <img class="img-fluid rounded" src="/static/imgs/give-droplet-a-name.png" alt="">
+              </li>
+            </ul>
+          </li>
+
+          <hr>
+
+          <li>
+            <p>Initial Server Setup for Ubuntu</p>
+              <ul><li>Nagivate to <a href="https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-18-04">
+                this post</a> and follow the instructions exactly. This guide runs you through how to connect to your
+                droplet through SSH and configure the basics settings for your server.
+              </li></ul>
+          </li>
+          <li>
+            <p>Setup Python environment exactly the same way we did earlier in this post</p>
+            <ul><li>
+              <a href="https://www.digitalocean.com/community/tutorials/how-to-install-python-3-and-set-up-a-programming-environment-on-an-ubuntu-18-04-server">
+                Setting Up a Local Python Environment
+              </a>
+            </li></ul>
+          </li>
+          <li>
+            <p>Install Apache2 from the 'A' in LAMP. Only do the Apache section in the link below.</p>
+            <ul><li>
+              <a href="https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-ubuntu-18-04">
+                LAMP
+              </a>
+            </li></ul>
+          </li>
+          <li>
+            <p>Install and Enable mod_wsgi</p>
+            <ul>
+              <li>
+                <p>To do this, connect to your droplet through SSH and run the following commands</p>
+                <p>Installing mod_wsgi onto your server</p>
+                <pre><code>
+sudo apt-get install libapache2-mod-wsgi python-dev
+                </code></pre>
+                <p>Enabling mod_wsgi. This is what allows us to erver our Python website using Apache</p>
+                <pre><code>
+sudo a2enmod wsgi
+                </code></pre>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <p>Creating the Folder Hierarchy (follow this exactly)</p>
+            <ul>
+              <li>
+                <p>Navigate to www folder</p>
+              </li>
+              <li>
+                <p>make webApp folder and go into it</p>
+              </li>
+              <li>
+                <p>Make another webApp folder and give the exact same name</p>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <p>Uploading Your Website Files to Digital Ocean</p>
+            <ul>
+              <li>
+                <p>Download <a href="https://filezilla-project.org">FileZilla</a></p>
+              </li>
+              <li>
+                <p>Connect to your droplet</p>
+                <img class="img-fluid rounded" src="/static/imgs/connect-with-filezilla.png" alt="">
+              </li>
+              <li>
+                <p>Copy paste the files to the correct directory. The left is your local. The right is your server.</p>
+                <img class="img-fluid rounded" src="/static/imgs/filezilla-local-folders.png" alt="">
+                <p>On the right navigate to /var/www/webApp/webApp and copy your project files here.</p>
+                <img class="img-fluid rounded" src="/static/imgs/filezilla-server-folders.png" alt="">
+              </li>
+            </ul>
+          </li>
+          <li>
+            <p>Making Sure Our Website Runs</p>
+            <ul>
+              <li>
+                <p>Connect to your droplet through the terminal or putty and install flask</p>
+                <pre><code>
+sudo pip install flask
+                </code></pre>
+              </li>
+              <li>
+                <p>Check that the app runs successfully. Connect to your droplet through the terminal or putyy and
+                  navigate to /var/www/webApp/webApp. Run the following commands:</p>
+                <pre><code>
+FLASKAPP=__init__.py
+sudo python __init__.py
+                </code></pre>
+                <p>Your output should look like the same as it did when we ran it on your local machine.</p>
+                <img class="img-fluid rounded" src="/static/imgs/website_post_server_running.png" alt="">
+                <p>
+              </li>
+              <li>
+                <p>Install flask the same way we did earlier in this post</p>
+                <pre><code>
+sudo pip install flask
+                </code></pre>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <p>Creating the wsgi file. This is our deployment file that tells Apache how to serve our app.</p>
+            <ul>
+              <li>
+                <p>Navigate to your first webaApp folder</p>
+                <pre><code>
+cd /var/www/webApp
+                </code></pre>
+              </li>
+              <li>
+                <p>Create the wsgi file.Make sure this file name is different than your folder names. Otherwise Apache will get confused on where the file is.</p>
+                <pre><code>
+sudo nano webapp.wsgi
+                </code></pre>
+              </li>
+              <li>
+                <p>Copy the following code into your file</p>
+                <pre><code>
+#!/usr/bin/python
+import sys
+import logging
+logging.basicConfig(stream=sys.stderr)
+sys.path.insert(0,"/var/www/webApp/")
+
+from webApp import app as application
+application.secret_key = 'secretkey'
+                </code></pre>
+              </li>
+              <li>
+                <p>Your folder hierarchy should look something like this now</p>
+                <pre><code>
+|-webApp
+|-------webApp
+|-------------templates
+|-------------static
+|-------------__init__.py
+|-------webapp.wsgi
+                </code></pre>
+              </li>
+              <li>
+                <p>Now we just need to restart Apache to see our changes. Note that every time
+                you make a change to anything not in the second webApp folder, you'll need to run the following commands</p>
+                <pre><code>
+sudo service apache2 restart
+                </code></pre>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <p>Configure and Enable a New Virtual Host on Apache</p>
+            <ul>
+              <li>
+                <p>First we need to navigate to the apache directory and create a vitual host for our app.
+                  Run the following commands to create the configuration file in Apache's directory.
+                </p>
+                <pre><code>
+sudo nano /etc/apache2/sites-available/webApp.conf
+                </code></pre>
+              </li>
+              <li>
+                <p>Next copy the following code into your file. Changing the following variables to yours.</p>
+                <ul>
+                  <li><p>ServerName YOUR.DROPLET.IP.ADDRESS</p></li>
+                  <li><p>ServerAdmin admin@youremail.com</p></li>
+                  <li><p>
+                    If you've been following this guide exactly you shouldn't have to change anything else.
+                    If not, then make sure your DocumentRoot is the correct path to your app files, your
+                    WSGIScriptAlias is set to /webApp/ (not /webApp/webApp/) since this is where your wsgi file needs to be.
+                    Also ensure that any static folders (such as images, html, etc) each have their own Directory tag with
+                    the correct folder path.
+                  </p></li>
+                  <pre><code>
+&lt;VirtualHost *:80&gt;
+  ServerName entitymetrics.com
+  ServerAdmin admin@entitymetrics.com
+  DocumentRoot /var/www/webApp/webApp
+  WSGIScriptAlias / /var/www/webApp/webapp.wsgi
+  &lt;Directory /var/www/webApp/webApp/&gt;
+    Order allow,deny
+    Allow from all
+  &lt;/Directory>
+  Alias /static /var/www/webApp/webApp/static
+  &lt;Directory /var/www/webApp/webApp/static/&gt;
+    Order allow,deny
+    Allow from all
+  &lt;/Directory&gt;
+  ErrorLog $&#123;APACHE_LOG_DIR&#125;/error.log
+  LogLevel warn
+  CustomLog $&#123;APACHE_LOG_DIR&#125;/access.log combined
+  RewriteEngine on
+  RewriteCond %&#123;SERVER_NAME&#125; =www.entitymetrics.com &#91;OR&#93;
+  RewriteCond %&#123;SERVER_NAME&#125; =entitymetrics.com
+  RewriteRule ^ https://%&#123;SERVER_NAME&#125;%&#123;REQUEST_URI&#125; &#91;END,NE,R=permanent&#93;
+&lt;/VirtualHost&gt;
+                  </code></pre>
+                </ul>
+              </li>
+              <li>
+                <p>Save the file and enable the virtual host with the following commands</p>
+                <pre><code>
+sudo a2ensite webApp
+                </code></pre>
+              </li>
+              <li>
+                <p>Finally let's restart Apache one more time</p>
+                <pre><code>
+sudo service apache2 restart
+                </code></pre>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <p>Navigate to your website by entering your droplet IP address into the search bar of your browser.
+              You should now be able to see your new website.
+            </p>
+            <img>
+          </li>
+        </ul>
+
+        <hr>
+
+        <h3>Further Reading</h3>
+        <ul>
+          <li><a href="https://www.digitalocean.com/community/tutorials/how-to-point-to-digitalocean-nameservers-from-common-domain-registrars">How to setup DNS for your Droplet</a></li>
+          <li><a href="https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-18-04">How to Secure Your Server with Let's Encrypt</a></li>
+          <li><a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-18-04">How to Secure Your App With UFW</a></li>
+          <li><a href="https://www.digitalocean.com/community/tutorials/recommended-security-measures-to-protect-your-servers">Best Security Practices For Your Droplet</a></li>
+          <li><a href="https://www.digitalocean.com/docs/droplets/how-to/add-ssh-keys/">Securing Your Droplet With SSH Keys</a></li>
+        </ul>
+
+
+
+      </div>
+
+      <!-- Sidebar Widgets Column -->
+      <div class="col-md-4">
+
+        <!-- Side Widget -->
+        <div class="card my-4">
+          <h5 class="card-header">Overview</h5>
+          <div class="card-body">
+            <p>1. <a href="#overview">Overview</a></p>
+            <p>2. <a href="#installing-packages">Installing Packages</a></p>
+            <p>3. <a href="#create-website">Creating a Python Website</a></p>
+            <ul>
+              <li><p><a href="#running-website">Running Your Website</a></p></li>
+              <li><p><a href="#adding-pages">Adding More Pages To Your Website</a></p></li>
+              <li><p><a href="#adding-html">Adding HTML To Your Website</a></p></li>
+              <li><p><a href="#adding-bootstrap">Adding Bootstrap</a></p></li>
+            </ul>
+            <p>4. <a href="#deploy-to-server">Deploying To A VPS Linux Server</a></p>
+            <ul>
+              <li><p><a href="#droplet-setup">Setting Up A Digital Ocean Droplet</a></p></li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      </div>
+    <!-- /.row -->
+
+  </div>
+  <!-- /.container -->
+
+	<footer id="footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12 text-center pb-4">
+					<p>2020 © Entity Metrics, LLC - Copyright All Rights Reserved</p>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+</div>
+{% endblock %}

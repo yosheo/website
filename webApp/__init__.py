@@ -20,9 +20,21 @@ def home():
 def about():
     return render_template("projects.html")
 
+@app.route('/website-documentation')
+def website_doc():
+    return render_template("website-documentation.html")
+
+# @app.route("/")
+# def home():
+#     return render_template("index0.html")
+#
+# @app.route('/projects')
+# def about():
+#     return "Hello! This is the projects page!"
+#
 # @app.route('/contact')
 # def contact():
-#     return render_template("contact.html")
+#     return "Hello! This is the contact page!"
 
 # @app.route('/<name>')
 # def about(name):
@@ -34,4 +46,3 @@ def about():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
